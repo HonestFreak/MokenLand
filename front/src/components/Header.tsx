@@ -15,7 +15,6 @@ const Header = (props: {
     if (e.key === 'Enter') {
       // Prevent the default behavior of the Enter key (e.g., form submission)
       e.preventDefault();
-
       // Update the URL with the new ID
       window.location.href = `/profile?id=${id}`;
     }
