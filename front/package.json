@@ -10,7 +10,7 @@
   },
   "author": {
     "name": "HonestFreak",
-    "email": "HonestFreakHere@gmail.com",
+    "email": "HonestFreakHere@gmail.com"
   },
   "dependencies": {
     "apexcharts": "^3.41.0",
