@@ -2,51 +2,57 @@ import Breadcrumb from '../components/Breadcrumb';
 import fireToast from '../hooks/fireToast';
 import { useState,useEffect } from "react";
 import { Link } from 'react-router-dom';
-const EditToken = () => {
-  const [modalOpen, setModalOpen] = useState(false);
-  const [rows, setRows] = useState(localStorage.getItem("alertSettings")?JSON.parse(localStorage.getItem("alertSettings")):[]);
+const EditToken = (props) => {
+  const [selectedTokenAddress, setSelectedTokenAddress] = useState();
+  const [mytoken, setMytoken] = useState([]);
+  const [airdropAccounts, setAirdropAccounts] = useState("");
+  const [airdropAmount, setAirdropAmount] = useState(0);
+  const [mintAmount, setMintAmount] = useState(0);
+  const [burnAmount, setBurnAmount] = useState(0);
+
+  const loadData = async () => {
+    const factoryContract = props.factoryContract;
+    const mytoken = await factoryContract.userData(props.account);
+    setMytoken(mytoken);
+    setSelectedTokenAddress(mytoken[0]);
+  };
+
+  const mint = async () => {
+    const tokenContract = props.tokenContract;
+    const selectedToken = await tokenContract.attach(selectedTokenAddress);
+    await selectedToken.mintmore(mintAmount);
+  }
+
+  const burn = async () => {
+    const tokenContract = props.tokenContract;
+    const selectedToken = await tokenContract.attach(selectedTokenAddress);
+    await selectedToken.burn(burnAmount);
+  }
+
+  const airdrop = async () => {
+    const tokenContract = props.tokenContract;
+    const selectedToken = await tokenContract.attach(selectedTokenAddress);
+    const airdroplist = airdropAccounts.split("\n");
+    await selectedToken.airdrop(airdroplist, airdropAmount);
+  }
+
   useEffect(() => {
-    // storing input name
-    localStorage.setItem("alertSettings", JSON.stringify(rows));
-  }, [rows]);
-  const [rowToEdit, setRowToEdit] = useState(null);
-
-  const handleDeleteRow = (targetIndex) => {
-    setRows(rows.filter((_, idx) => idx !== targetIndex));
-  };
-
-  const handleEditRow = (idx) => {
-    setRowToEdit(idx);
-
-    setModalOpen(true);
-  };
-
-  const handleSubmit = (newRow) => {
-    rowToEdit === null
-      ? setRows([...rows, newRow])
-      : setRows(
-          rows.map((currRow, idx) => {
-            if (idx !== rowToEdit) return currRow;
-
-            return newRow;
-          })
-        );
-  };
+    loadData();
+  }, []);
 
   return (
     <>
       <div className="mx-auto max-w-270">
-        
-        <Breadcrumb pageName="New Moken" />
+        <Breadcrumb pageName="Edit Moken" />
 
         <div className="grid grid-cols-5 gap-8">
           <div className="col-span-5 xl:col-span-3">
 
           <div className="relative z-20 bg-white dark:bg-form-input">
                   <select className="relative z-20 w-full appearance-none rounded border border-stroke bg-transparent py-3 px-5 outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input">
-                    <option value="">ERC20</option>
-                    {/* <option value="">ERC 721 (NFT)</option>
-                    <option value="">ERC 1151</option> */}
+                    { mytoken.map((token,_index) => {
+                      return <option value={token}>{token}</option>
+                    })}
                   </select>
           </div><br/>
 
@@ -59,7 +65,6 @@ const EditToken = () => {
               
               <div className="p-7">
                 
-                <form action="#">
 
              
                   <div className="mb-5.5">
@@ -70,6 +75,7 @@ const EditToken = () => {
                 </label>
                 <textarea
                   rows={6}
+                  onChange={(e) => setAirdropAccounts(e.target.value)}
                   placeholder="one address per line"
                   className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent py-3 px-5 font-medium outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
                 ></textarea>
@@ -83,6 +89,7 @@ const EditToken = () => {
                     </label>
                     <div className="relative">
                       <input
+                        onChange={(e) => setAirdropAmount(e.target.value)}
                         className="w-full rounded border border-stroke bg-gray py-3 pl-4 pr-4.5 text-black focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-meta-4 dark:text-white dark:focus:border-primary"
                         type="number"
                         name="supply"
@@ -95,13 +102,11 @@ const EditToken = () => {
                   <div className="flex justify-end gap-4.5">
                     <button
                       className="flex justify-center rounded bg-primary py-2 px-6 font-medium text-gray hover:shadow-1"
-                      type="submit"
-                      onClick={fireToast}
+                      onClick={airdrop}
                     >
                       Send
                     </button>
                   </div>
-                </form>
               </div>
             </div> <br/>
 
@@ -114,8 +119,6 @@ const EditToken = () => {
               
               <div className="p-7">
                 
-                <form action="#">
-
              
                   <div className="mb-5.5">
                     <label
@@ -131,6 +134,7 @@ const EditToken = () => {
                         name="supply"
                         id="supply"
                         placeholder="10000"
+                        onChange={(e) => setMintAmount(e.target.value)}
                       />
                     </div>
                   </div>
@@ -138,13 +142,11 @@ const EditToken = () => {
                   <div className="flex justify-end gap-4.5">
                     <button
                       className="flex justify-center rounded bg-primary py-2 px-6 font-medium text-gray hover:shadow-1"
-                      type="submit"
-                      onClick={fireToast}
+                      onClick={mint}
                     >
                       Mint
                     </button>
                   </div>
-                </form>
               </div>
             </div>
 
@@ -159,8 +161,6 @@ const EditToken = () => {
               
               <div className="p-7">
                 
-                <form action="#">
-
              
                   <div className="mb-5.5">
                     <label
@@ -176,6 +176,7 @@ const EditToken = () => {
                         name="supply"
                         id="supply"
                         placeholder="10000"
+                        onChange={(e) => setBurnAmount(e.target.value)}
                       />
                     </div>
                   </div>
@@ -183,13 +184,11 @@ const EditToken = () => {
                   <div className="flex justify-end gap-4.5">
                     <button
                       className="flex justify-center rounded bg-primary py-2 px-6 font-medium text-gray hover:shadow-1"
-                      type="submit"
-                      onClick={fireToast}
+                      onClick={burn}
                     >
                       Burn
                     </button>
                   </div>
-                </form>
               </div>
             </div>
 

@@ -50,7 +50,6 @@ const MarketPlace = (props) => {
   const loadData = async () => { // for mint token form
     const mytoken = await factoryContract.userData(props.account);
     setMytoken(mytoken);
-    console.log("mytoken ", mytoken)
   };
 
   const marketData = async () => { // for listed tokens table

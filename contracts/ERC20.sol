@@ -8,18 +8,31 @@ contract Register {
     function register(address _recipient) public returns (uint256 tokenId) {}
 }
 
-contract Token is ERC20 {
-    constructor(string memory _name, string memory _ticker, uint256 _supply) payable  ERC20(_name, _ticker) {
+contract Token is ERC20  {
+    address owner;
+    constructor(string memory _name, string memory _ticker, uint256 _supply) payable  ERC20(_name, _ticker)  {
       _mint(msg.sender, _supply);
+      owner = msg.sender;
        Register sfsContract = Register(0xBBd707815a7F7eb6897C7686274AFabd7B579Ff6); // SFS Testnet
        sfsContract.register(msg.sender);
     }
 
-      function airdrop(address[] memory _accounts, uint256 _amount) public {
-        for (uint i = 0; i < _accounts.length; i++) {
-            _transfer(msg.sender, _accounts[i], _amount);
-        }
+      function airdrop(address[] memory _accounts, uint256 _amount) public  {
+        if(msg.sender == owner)
+        {    for (uint i = 0; i < _accounts.length; i++) {
+                _transfer(msg.sender, _accounts[i], _amount);
+            }}
     }
+
+      function mintmore(uint256 _amount) public  {
+        if(msg.sender == owner)
+        {_mint(msg.sender, _amount);}
+      }
+
+       function burn(uint256 _amount) public  {
+        if(msg.sender == owner)
+        {_burn(msg.sender, _amount);}
+      }
 }
 
 // Generates a new token and registers for SFS

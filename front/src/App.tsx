@@ -1,6 +1,5 @@
 import { Suspense, lazy, useEffect, useState } from 'react';
 import { Route, Routes } from 'react-router-dom';
-import { Toaster } from 'react-hot-toast';
 import { ethers } from 'ethers';
 import Factory from './contracts/Factory.json';
 import Token from './contracts/Token.json';
@@ -69,11 +68,8 @@ function App() {
 
   return (
     <>
-      <Toaster position="top-right" reverseOrder={false} containerClassName="overflow-auto" />
       <Routes>
-        <Route path="/auth/signin" element={<SignIn />} />
-        <Route path="/auth/signup" element={<SignUp />} />
-        <Route element={<DefaultLayout />}>
+        <Route element={<DefaultLayout val={account}/>}>
           {account && <Route index element={<Dashboard {...{
             'factoryContract': factoryContract,
             'account': account,
