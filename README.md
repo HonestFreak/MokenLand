@@ -28,3 +28,7 @@ npx hardhat run  scripts/deploy.js --network localhost
   cd front
   npm run dev
 ```
+
+## 📸Screenshots
+![Alt text](mms1.png)
+ ![Alt text](mms2.png) ![Alt text](mms3.png) ![Alt text](mms4.png) ![Alt text](mms6.png) ![Alt text](mms8.png)![Alt text](mms9.png)
