@@ -1,8 +1,7 @@
 import { Link } from 'react-router-dom';
 import Logo from '../images/logo/logo-icon.svg';
 import DarkModeSwitcher from './DarkModeSwitcher';
-import DropdownMessage from './DropdownMessage';
-import DropdownNotification from './DropdownNotification';
+import { useState } from 'react';
 import DropdownUser from './DropdownUser';
 
 const Header = (props: {
@@ -10,6 +9,17 @@ const Header = (props: {
   setSidebarOpen: (arg0: boolean) => void;
   val: any;
 }) => {
+  const [id, setId] = useState(1);
+
+  const handleKeyPress = (e) => {
+    if (e.key === 'Enter') {
+      // Prevent the default behavior of the Enter key (e.g., form submission)
+      e.preventDefault();
+
+      // Update the URL with the new ID
+      window.location.href = `/profile?id=${id}`;
+    }
+  }
   return (
     <header className="sticky top-0 z-999 flex w-full bg-white drop-shadow-1 dark:bg-boxdark dark:drop-shadow-none">
       <div className="flex flex-grow items-center justify-between py-4 px-4 shadow-2 md:px-6 2xl:px-11">
@@ -63,7 +73,6 @@ const Header = (props: {
         </div>
 
         <div className="hidden sm:block">
-          <form action="https://formbold.com/s/unique_form_id" method="POST">
             <div className="relative">
               <button className="absolute top-1/2 left-0 -translate-y-1/2">
                 <svg
@@ -91,11 +100,12 @@ const Header = (props: {
 
               <input
                 type="text"
-                placeholder="Type to search..."
+                placeholder="Get Listed Tokens by ID"
                 className="w-full bg-transparent pr-4 pl-9 focus:outline-none"
+                onChange={(e) => setId(e.target.value)}
+                onKeyDown={handleKeyPress}
               />
             </div>
-          </form>
         </div>
 
         <div className="flex items-center gap-3 2xsm:gap-7">
