@@ -7,8 +7,6 @@ import MarketPlaceContract from './contracts/Market.json';
 import ContractAddress from './contracts/contract-address.json';
 import SFS from './contracts/SFS.json';
 
-import SignIn from './pages/Authentication/SignIn';
-import SignUp from './pages/Authentication/SignUp';
 import Loader from './common/Loader';
 import routes from './routes';
 import Dashboard from './pages/Dashboard';
