@@ -2,7 +2,7 @@ import { lazy } from 'react';
 import NewToken from '../pages/NewToken';
 import EditToken from '../pages/EditTokens';
 
-const Calendar = lazy(() => import('../pages/Calendar'));
+const SFSManager = lazy(() => import('../pages/SFSManager'));
 const Chart = lazy(() => import('../pages/Chart'));
 const FormElements = lazy(() => import('../pages/Form/FormElements'));
 const FormLayout = lazy(() => import('../pages/Form/FormLayout'));
@@ -17,6 +17,11 @@ const coreRoutes = [
     title: 'Edit Token',
     component: EditToken,
     reqs: ['factory'],
+  },
+  {
+    path: '/sfs',
+    title: 'SFS Manager',
+    component: SFSManager,
   },
   {
     path: '/profile',

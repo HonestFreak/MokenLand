@@ -120,8 +120,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                         }`}
                       >
                        🚀
-                        ChadBoard
-                       
+                        ChadBoard  
                       </NavLink>
                     </React.Fragment>
                   );
@@ -170,6 +169,20 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                 </NavLink>
               </li>
               {/* <!-- Menu Item Market --> */}
+
+               {/* <!-- Menu Item sfs --> */}
+               <li>
+                <NavLink
+                  to="/marketplace"
+                  className={`group relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4 ${
+                    pathname.includes('marketplace') && 'bg-graydark dark:bg-meta-4'
+                  }`}
+                > 
+                  🐸 SFS Manager
+                </NavLink>
+              </li>
+              {/* <!-- Menu Item sfs --> */}
+
             </ul>
           </div>
         </nav>

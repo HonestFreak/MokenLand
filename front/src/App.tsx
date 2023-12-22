@@ -84,7 +84,8 @@ function App() {
                   <route.component {...{'factoryContract': factoryContract,
             'account': account,
             'marketplaceContract': marketplaceContract,
-            'tokenContract': tokenContract
+            'tokenContract': tokenContract,
+            'sfsContract': sfsContract
              }}/>
                 </Suspense>
               }
